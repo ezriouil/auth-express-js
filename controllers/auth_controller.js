@@ -45,7 +45,7 @@ const register = async (req, res) => {
     const { password, isAdmin, verified, otpCode, __v, ...other } = result._doc;
 
     const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-    const link = `https://sparkling-rose-hosiery.cyclic.app/api/auth/verify-user-account/${token}`;
+    const link = `https://sparkling-rose-hosiery.cyclic.app:8000/api/auth/verify-user-account/${token}`;
 
     const transporter = nodeMailer.createTransport({
             service : "gmail",
@@ -61,10 +61,6 @@ const register = async (req, res) => {
       
           transporter.sendMail(mailOptions, async (error, success) => {
             if(error){
-              
-              console.log("***********");
-              console.log(error);
-              console.log("***********");
 
               user.verified = true;
               await user.save();
@@ -156,7 +152,7 @@ const reSendEmailVerificationLink = async(req, res) => {
   }
 
   const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-  const link = `https://sparkling-rose-hosiery.cyclic.app/api/auth/verify-user-account/${token}`;
+  const link = `http://localhost:8000/api/auth/verify-user-account/${token}`;
 
   const transporter = nodeMailer.createTransport({
             service : "gmail",
