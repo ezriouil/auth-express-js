@@ -61,6 +61,10 @@ const register = async (req, res) => {
       
           transporter.sendMail(mailOptions, async (error, success) => {
             if(error){
+              
+              console.log("***********");
+              console.log(error);
+              console.log("***********");
 
               user.verified = true;
               await user.save();
