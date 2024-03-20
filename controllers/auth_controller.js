@@ -11,8 +11,6 @@ const { emailTemplateSendVerificationLink, emailTemplateSendOTPCode } = require(
 /* ==>  REGISTER NEW USER  <== */
 const register = async (req, res) => {
 
-  console.log("HOST ==> " + process.env.HOST);
-
   try {
     
     const validateRegister = Joi.object({
@@ -62,13 +60,13 @@ const register = async (req, res) => {
           }
       
           transporter.sendMail(mailOptions, async (error, success) => {
-            console.log("error ==> " + error.message);
-            console.log("success ==> " + success.response);
             if(error){
-
+              console.log("error ==> " + error.message);
               user.verified = true;
               await user.save();
-              
+            }
+            if(success){
+              console.log("success ==> " + success.response);
             }
           });
 
