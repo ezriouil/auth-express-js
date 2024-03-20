@@ -26,7 +26,7 @@ router.post('/login', login);
 /**
  * @desc     Verfiy User Account
  * @route    /api/verify-user-account/:token
- * @methods  POST
+ * @methods  GET
  * @access   public
  */
 router.get('/verify-user-account/:token', verifyUserAccount);
@@ -71,7 +71,7 @@ router.post('/verify-otp-code-reset-the-password', verifyOtpCodeResetThePassword
 /**
  * @desc     Reset The Passwrord
  * @route    /api/reset-the-password
- * @methods  POST
+ * @methods  PUT
  * @access   public
  */
 router.put('/reset-the-password', resetThePassword);
