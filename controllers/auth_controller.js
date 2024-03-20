@@ -47,7 +47,7 @@ const register = async (req, res) => {
     const { password, isAdmin, verified, otpCode, __v, ...other } = result._doc;
 
     const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-    const link = `http://${env.process.HOST}/api/auth/verify-user-account/${token}`;
+    const link = `http://${process.env.HOST}/api/auth/verify-user-account/${token}`;
 
     const transporter = nodeMailer.createTransport({
             service : "Gmail",
@@ -154,7 +154,7 @@ const reSendEmailVerificationLink = async(req, res) => {
   }
 
   const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-  const link = `http://${env.process.HOST}/api/auth/verify-user-account/${token}`;
+  const link = `http://${process.env.HOST}/api/auth/verify-user-account/${token}`;
 
   const transporter = nodeMailer.createTransport({
             service : "Gmail",
