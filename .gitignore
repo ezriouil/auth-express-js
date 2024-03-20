@@ -1,4 +1,5 @@
 node_modules
 .env
 txt.js
-controllers/
+controllers/auth_controller.js
+controllers/user_controller.js
