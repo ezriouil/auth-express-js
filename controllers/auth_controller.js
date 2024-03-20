@@ -11,7 +11,7 @@ const { emailTemplateSendVerificationLink, emailTemplateSendOTPCode } = require(
 /* ==>  REGISTER NEW USER  <== */
 const register = async (req, res) => {
 
-  console.log("HOST ==> " + req.headers.host);
+  console.log("HOST ==> " + process.env.HOST);
 
   try {
     
@@ -62,6 +62,8 @@ const register = async (req, res) => {
           }
       
           transporter.sendMail(mailOptions, async (error, success) => {
+            console.log("error ==> " + error.message);
+            console.log("success ==> " + success.response);
             if(error){
 
               user.verified = true;
