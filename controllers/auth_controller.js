@@ -11,6 +11,8 @@ const { emailTemplateSendVerificationLink, emailTemplateSendOTPCode } = require(
 /* ==>  REGISTER NEW USER  <== */
 const register = async (req, res) => {
 
+  console.log("HOST ==> " + req.headers.host);
+
   try {
     
     const validateRegister = Joi.object({
@@ -45,10 +47,10 @@ const register = async (req, res) => {
     const { password, isAdmin, verified, otpCode, __v, ...other } = result._doc;
 
     const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-    const link = `https://sparkling-rose-hosiery.cyclic.app:8000/api/auth/verify-user-account/${token}`;
+    const link = `http://${req.headers.host}/api/auth/verify-user-account/${token}`;
 
     const transporter = nodeMailer.createTransport({
-            service : "gmail",
+            service : "Gmail",
             auth : { user : process.env.EMAIL, pass : process.env.PASSWORD }
           })
       
@@ -152,10 +154,10 @@ const reSendEmailVerificationLink = async(req, res) => {
   }
 
   const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-  const link = `http://localhost:8000/api/auth/verify-user-account/${token}`;
+  const link = `http://${req.headers.host}/api/auth/verify-user-account/${token}`;
 
   const transporter = nodeMailer.createTransport({
-            service : "gmail",
+            service : "Gmail",
             auth : {
               user : process.env.EMAIL,
               pass : process.env.PASSWORD }})
