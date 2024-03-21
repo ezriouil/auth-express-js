@@ -80,12 +80,7 @@ const register = async (req, res) => {
       }
     });
 
-    console.log("INFO MESSAGE ID ==> " + info.messageId);
-    console.log("INFO ENVELOPE ==> " + info.envelope);
-    console.log("INFO ACCEPTED ==> " + info.accepted);
-    console.log("INFO REJECTED ==> " + info.rejected);
-    console.log("INFO PENDING ==> " + info.pending);
-    console.log("INFO RESPONSE ==> " + info.response);
+    console.log("INFO ==> " + info);
 
     return res.status(REQUEST_CODES.CREATED).json({...other});
     
