@@ -47,28 +47,48 @@ const register = async (req, res) => {
     const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
     const link = `https://${process.env.HOST}/api/auth/verify-user-account/${token}`;
 
+    console.log("TOKEN ==> " + token);
+
     const transporter = nodeMailer.createTransport({
-            service : "Gmail",
-            auth : { user : process.env.EMAIL, pass : process.env.PASSWORD }
-          })
-      
-          const mailOptions = {
-            from : process.env.EMAIL,
-            to : user.email,
-            subject : "Verify account",
-            html : emailTemplateSendVerificationLink(link,req.body.userName)
-          }
-      
-          transporter.sendMail(mailOptions, async (error, success) => {
-            if(error){
-              user.verified = true;
-              await user.save();
-            }
-          });
-
-          return res.status(REQUEST_CODES.CREATED).json({...other});
+      service : "gmail",
+      auth : { user : process.env.EMAIL, pass : process.env.PASSWORD }
+    })
     
+    console.log("EMAIL ==> " + process.env.EMAIL);
+    console.log("PASS ==> " + process.env.PASSWORD);
 
+    const mailOptions = {
+      from : process.env.EMAIL,
+      to : user.email,
+      subject : "Verify account",
+      html : emailTemplateSendVerificationLink(link,req.body.userName)
+    }
+
+    var info = transporter.sendMail(mailOptions, async (error, success) => {
+      if(error){
+
+        console.log("ERROR ==> " + error);
+
+        user.verified = true;
+        await user.save();
+      }
+      else if(success){
+        console.log("SUCCESS ==> " + success);
+      }
+      else {
+        console.log("ELSE ==> ");
+      }
+    });
+
+    console.log("INFO MESSAGE ID ==> " + info.messageId);
+    console.log("INFO ENVELOPE ==> " + info.envelope);
+    console.log("INFO ACCEPTED ==> " + info.accepted);
+    console.log("INFO REJECTED ==> " + info.rejected);
+    console.log("INFO PENDING ==> " + info.pending);
+    console.log("INFO RESPONSE ==> " + info.response);
+
+    return res.status(REQUEST_CODES.CREATED).json({...other});
+    
   } catch (error) {console.log(error);
     
     return res.status(REQUEST_CODES.SERVER_ERROR).json({ message : 'Something Went Wrong' });
