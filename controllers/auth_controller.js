@@ -45,17 +45,12 @@ const register = async (req, res) => {
     const { password, isAdmin, verified, otpCode, __v, ...other } = result._doc;
 
     const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-    const link = `https://${process.env.HOST}/api/auth/verify-user-account/${token}`;
-
-    console.log("TOKEN ==> " + token);
+    const link = `${process.env.HOST}/api/auth/verify-user-account/${token}`;
 
     const transporter = nodeMailer.createTransport({
       service : "gmail",
       auth : { user : process.env.EMAIL, pass : process.env.PASSWORD }
     })
-    
-    console.log("EMAIL ==> " + process.env.EMAIL);
-    console.log("PASS ==> " + process.env.PASSWORD);
 
     const mailOptions = {
       from : process.env.EMAIL,
@@ -64,23 +59,12 @@ const register = async (req, res) => {
       html : emailTemplateSendVerificationLink(link,req.body.userName)
     }
 
-    var info = transporter.sendMail(mailOptions, async (error, success) => {
+    transporter.sendMail(mailOptions, async (error, success) => {
       if(error){
-
-        console.log("ERROR ==> " + error);
-
         user.verified = true;
         await user.save();
       }
-      else if(success){
-        console.log("SUCCESS ==> " + success);
-      }
-      else {
-        console.log("ELSE ==> ");
-      }
     });
-
-    console.log("INFO ==> " + info);
 
     return res.status(REQUEST_CODES.CREATED).json({...other});
     
@@ -165,7 +149,7 @@ const reSendEmailVerificationLink = async(req, res) => {
   }
 
   const token = jwt.sign({ email : user.email, id : user._id }, process.env.JWT_SECRET_KEY)
-  const link = `https://${process.env.HOST}/api/auth/verify-user-account/${token}`;
+  const link = `${process.env.HOST}/api/auth/verify-user-account/${token}`;
 
   const transporter = nodeMailer.createTransport({
             service : "Gmail",
