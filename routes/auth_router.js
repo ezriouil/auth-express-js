@@ -43,7 +43,7 @@ router.post('/re-send-email-verification-link', reSendEmailVerificationLink);
 
 /**
  * @desc     Send OTP Code Reset The Password
- * @route    /api/send-otp-code-reset-the-password/:token
+ * @route    /api/send-otp-code-reset-the-password
  * @methods  POST
  * @access   public
  */

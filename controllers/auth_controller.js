@@ -233,9 +233,9 @@ const sendOtpCodeResetThePassword = async(req, res) => {
       if(!user.verified){
         return res.status( REQUEST_CODES.BAD_REQUEST ).json({ message : 'Your Account Not Verified' });
       }
-      if(user.otpCode !== null){
-        return res.status( REQUEST_CODES.BAD_REQUEST ).json({ message : 'Code OTP Already Sent Check Your Email' });
-      }
+      // if(user.otpCode !== null){
+      //   return res.status( REQUEST_CODES.BAD_REQUEST ).json({ message : 'Code OTP Already Sent Check Your Email' });
+      // }
 
       const genNewOtpCode = Math.floor(Math.random() * 9000) + 1000;
       await User.findOneAndUpdate( { email : req.body.email } , {
